@@ -106,6 +106,9 @@
         s.addEventListener("click", function() {
           gameState.chosenOption = answerObj[i];
           updateScore(answerObj[i]);
+          if (gameState.challenges.length === 0) {
+            gameState.challenges = chooseChallenges(gameState.chosenOption.data.challenges,gameState.scenario.challenges);
+          }
           requestAnimationFrame(advanceState);
         });
       }
@@ -196,8 +199,7 @@
     var arr = []
     while(arr.length < numChallenges){
         var randomnumber = Math.floor(Math.random()*challengeArr.length)
-        if(arr.indexOf(randomnumber) > -1) continue;
-        arr[arr.length] = challengeArr[randomnumber];
+        arr[arr.length] = challengeArr.splice(randomnumber,1)[0];
     }
     return arr;
   }
@@ -236,32 +238,22 @@
   function startScenario() {
     //set state
     gameState.playEntering = true;
-    gameState.challenges = [];
-    gameState.iterator++;
+    //gameState.challenges = [];
 
-    //grab new object
-    gameState.scenario = getNewScenario(questionBank);
-    //start run state
-    //Does it make sense to pass this state parameter in? Or just use it as
-    //a 'global'
-    requestAnimationFrame(advanceState);
-
-  }
-
-  function startChallenge() {
-    //set state
-    gameState.playEntering = true;
-    //grab new challenges
-
-    if (gameState.challenges.length < 1) {
-      gameState.challenges = chooseChallenges(gameState.numChallenges,gameState.scenario.challenges);
+    if (gameState.challenges.length > 0) {
+      //gameState.challenges = chooseChallenges(gameState.numChallenges,gameState.scenario.challenges);
+      gameState.scenario = gameState.challenges.shift();
+    } else {
+      gameState.iterator++;
+      //grab new object
+      gameState.scenario = getNewScenario(questionBank);
     }
 
     //start run state
     //Does it make sense to pass this state parameter in? Or just use it as
     //a 'global'
-    runScenario(gameState.challenges[gameState.challengeCounter]);
-    gameState.challengeCounter++;
+    requestAnimationFrame(advanceState);
+
   }
 
   function runScenario(obj) {
