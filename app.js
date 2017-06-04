@@ -12,13 +12,14 @@
     scenario = document.getElementById('scenario'),
     action = document.getElementById('action'),
     options = document.getElementById('options'),
-    response = document.getElementById('response'),
     detailContainer = document.getElementById('detail-container'),
     detailImageContainer = document.getElementById('detail-image'),
     detailTextContainer = document.getElementById('detail-text'),
     gameContainer = document.getElementById('game-container'),
 
     score = document.getElementById('score'),
+
+    chapterVal = parseInt(localStorage.getItem('chapter'),10),
 
 		orientationLocked = false,
 		lockOrientation =
@@ -46,16 +47,31 @@
 	Promise.all([
 		//Include function here for making sure document is loaded?
 		//Include function here to make sure all external scripts are loaded?
-		checkOrientation(),
+    checkOrientation(),
 	])
 	//then for checking viewport and size?
-	.then(setupGame);
+	.then(setupGame(chapterVal));
 
 
 	// respond to window resizes
   // NEEDED: onResize function
 	//$window.on("resize",onResize);
 
+  function setupColorScheme(cv) {
+    var cssColorRule = document.createElement("style");
+    cssColorRule.type = "text/css";
+    switch(cv) {
+      case 2:
+        cssColorRule.innerHTML = "body {color: #EEEEEE !important; background-color: #F4911E !important;} .buttonColor {color: #0079A7;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #1890C4;} .buttonDisabledColor:hover {color: #555;}";
+        break;
+      case 3:
+        cssColorRule.innerHTML = "body {color: #FFFFFF !important; background-color: #98D819 !important;} .buttonColor {color: #69008B;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #A919D8;} .buttonDisabledColor:hover {color: #555;}";
+        break;
+      default:
+        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
+    }
+    document.body.appendChild(cssColorRule);
+  }
 
   //Not entirely sure how this works... or if it works...
   function checkOrientation() {
@@ -90,7 +106,7 @@
       d.classList.add(colSize);
       var s = document.createElement("span");
       s.innerHTML = answerObj[i].option;
-      s.classList.add("button");
+      s.classList.add("button", "buttonColor");
       d.appendChild(s);
       //createPText(answerObj[i].option, d);
       if (answerObj[i].requirements) {
@@ -99,7 +115,7 @@
               (r === "cost" && answerObj[i].requirements[r]*gameState.family > gameState.money) ||
               (r === "family" && answerObj[i].requirements[r] > gameState.family) ||
               (r === "inventory" && answerObj[i].requirements[r] > gameState.inventory)) {
-                s.classList.add("disabled");
+                s.classList.add("buttonDisabledColor");
           }
         }
       } else {
@@ -176,7 +192,7 @@
     createPText(gameState.chosenOption.response, scenario);
     var s = document.createElement("span");
     s.innerHTML = "Continue";
-    s.classList.add("button");
+    s.classList.add("button", "buttonColor");
     action.appendChild(s);
 
     s.addEventListener("click", function() {
@@ -314,14 +330,24 @@
     //[[TODO]]
     //call stateEnded?
     //check win conditions if (gameState.winner = true)... else:
-    requestAnimationFrame(advanceState);
-
+    if (gameState.iterator >= gameState.questionBank.length-1) {
+      gameExit();
+    } else {
+      requestAnimationFrame(advanceState);
+    }
   }
 
-  //necessary???
   function gameExit() {
-    //check that everything is good
-    //Start new state
+    if (gameState.chapter < 3) {
+      gameState.chapter++;
+      setupGame(gameState.chapter);
+    } else {
+      scenario.innerHTML = "You Win!"
+      var a = document.createElement("a");
+      a.innerHTML = "Return to beginning";
+      a.setAttribute("href","index.html");
+      options.appendChild(a);
+    }
   }
 
   //should I pass in the entire question bank, or part of it?
@@ -341,10 +367,9 @@
     }
   }
 
-  function setupGame() {
+  function setupGame(cv) {
     //return Promise.resolve(initGame(localStorage.getItem('chapter')))
-    var chapterVal = parseInt(localStorage.getItem('chapter'),10);
-    return Promise.all([initGame(chapterVal), retrieveQB(chapterVal)])
+    return Promise.all([setupColorScheme(cv), initGame(cv), retrieveQB(cv)])
 		.then(advanceState);
 	}
 
