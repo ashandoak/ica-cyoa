@@ -81,7 +81,7 @@
       <div class="row col-sm-10 col-sm-offset-1" id="chapter-select">
         <div class="col-sm-4">
           <div id="chapter1" class="thumbnail">
-            <a href="game.html"><img src="chapter1.jpg" alt="chapter 1 image" onClick="testFunction('chapter1')"/></a>
+            <a href="game.html"><img src="chapter1.jpg" alt="chapter 1 image" onClick="sendChapter(1)"/></a>
             <div class="caption">
               <h3>Chapter 1</h3>
               <p>Some text describing chapter 1</p>
@@ -90,7 +90,7 @@
         </div>
         <div class="col-sm-4">
           <div class="thumbnail">
-            <a href="game.html"><img src="chapter1.jpg" alt="chapter 2 image" onClick="testFunction('chapter2')"/></a>
+            <a href="game.html"><img src="chapter1.jpg" alt="chapter 2 image" onClick="sendChapter(2)"/></a>
             <div class="caption">
               <h3>Chapter 2</h3>
               <p>Some text describing chapter 2</p>
@@ -99,7 +99,7 @@
         </div>
         <div class="col-sm-4">
           <div class="thumbnail">
-            <a href="game.html"><img src="chapter1.jpg" alt="chapter 3 image" onClick="testFunction('chapter3')"/></a>
+            <a href="game.html"><img src="chapter1.jpg" alt="chapter 3 image" onClick="sendChapter(3)"/></a>
             <div class="caption">
               <h3>Chapter 3</h3>
               <p>Some text describing chapter 3</p>
@@ -126,10 +126,8 @@
 
     //c1.appendChild(inputElement);​
 
-    function testFunction(str) {
-      console.log(str);
-      localStorage.setItem('chapter', str);
-      console.log("From local storage: " + localStorage.getItem('chapter'));
+    function sendChapter(ch) {
+      localStorage.setItem('chapter', ch);
     }
   </script>
 

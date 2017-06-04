@@ -1,0 +1,294 @@
+questionBank = [
+  {
+    scenario: "The front-line fighting has been inching closer and closer to your town in recent months and you decide you must leave for the sake of your spouse and three children. You can leave immediately, with the bare essentials, or you can stay and collect supplies for a few days at the risk of the fighting coming closer.",
+    action: "Do you leave immediately, or wait?",
+    answers: [
+      {
+        option: "Wait",
+        detail: "",
+        data: {"challenges": 2},
+        response: "Over the next few days you collect as much in the way of supplies as you can carry. You do face some challenges, however...",
+        image: "child-boat-refugee.jpg",
+        imageText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna est, sagittis eget pretium quis, finibus vel nibh. Vivamus nisi lacus, hendrerit sit amet massa eu, volutpat consectetur mauris. Donec viverra nisi at elit vestibulum, in pretium tellus commodo. Morbi auctor sed eros eu interdum. Cras in congue lectus, non ullamcorper enim. Cras mollis eget nibh nec porta. Phasellus eget ligula sed lacus rutrum commodo. Sed dignissim leo sed pulvinar porttitor."
+      },
+      {
+        option: "Leave",
+        detail: "You have to take care of your own family first.",
+        data: {"challenges": 0},
+        response: "You gather your family as quickly as you can and leave everything - and everyone else - behind."
+      },
+    ],
+    challenges: [
+      {
+        scenario: "Your eldest son comes to you and says that he wants to stay behind to help others. You respect his determination, but can you leave him behind?",
+        action: "Do you accept your son's wishes?",
+        answers: [
+          {
+            option: "Accept",
+            detail: "",
+            data: {"family": -1},
+            response: "Your son thanks you and wishes you well. He remains with the family until you are ready to depart. As you wave goodbye you hope it is not the last time you will see him."
+          },
+          {
+            option: "Compromise",
+            detail: "",
+            data: {"money": -5000, "inventory": -5},
+            response: "You give your son some of the food and money you have collected and tell him he may use it to help as many of those he can in the coming days, but he cannot stay behind. Although he is disappointed, your son respects your compromise."
+          },
+          {
+            option: "Deny",
+            detail: "",
+            data: {},
+            response: "Although your son is angry and argues he recognizes that he is needed to help his younger siblings to safety, and so agrees to come with you."
+          },
+        ],
+      },
+      {
+        scenario: " When it is almost time to depart your two youngest children ask to bring their favourite toys. Bringing the toys will meaning the loss of valuable carrying capacity for food and water; however, you know bringing the toys will provide some small measure of joy to your children on what is likely to be a very long and difficult journey.",
+        action: "Bring the toys, or leave them behind?",
+        answers: [
+          {
+            option: "Bring them",
+            detail: "",
+            data: {"inventory":-2},
+            response: "Both children are ecstaic and thank you. You know they are too young too completely understand the dangers, yet it makes you smile to see them happy."
+          },
+          {
+            option: "Compromise",
+            detail: "",
+            data: {"ìnventory": -1},
+            response: "You allow the children to bring one toy between them. They are disappointed, but are able to choose a toy they will both enjoy and will be able to share."
+          },
+          {
+            option: "Deny them",
+            detail: "",
+            data: {},
+            response: "It breaks your heart to see both your children so upset. You tell yourself it is for the best - you will need the food and water."
+          },
+        ],
+      },
+      {
+        scenario: "You have one uncle and a cousin living nearby. You agonize for days over whether or not you should bring them with you, but you know the journey is already going to be costly and difficult with five people.",
+        action: "Do you bring your uncle and cousin along?",
+        answers: [
+          {
+            option: "Bring both",
+            detail: "",
+            data: {"family": 2, "money": 5000, "inventory": 10},
+            response: "Your uncle and cousin are grateful that you are willing to help them. They've brought some food and money to contribute to the journey."
+          },
+          {
+            option: "Bring one",
+            detail: "",
+            data: {"family": 1, "money": 2000, "inventory": 4},
+            response: "Your uncle's advanced age would make travel on foot difficult. You decide to bring your cousin along, and promise to come back for your uncle as soon as you can."
+          },
+          {
+            option: "Leave them",
+            detail: "",
+            data: {},
+            response: "Your uncle and cousin are disappointed when you tell them, but they understand the challenges you face. You hug them tight at your parting, and feel shame as you walk away."
+          }
+        ]
+      }
+    ],
+    chapter: 1
+  },
+  {
+    scenario: "After some days of difficult travel you finally arrive at a small town near the border where you meet with a friend of a relative. Your contact tells you that you arrive at a good time, as there is a transport leaving that night to smuggle people across the border. The cost of taking this transport will be quite high; however, a better option might come along in a few days.",
+    action: "Do you leave with the transport, or wait a few days?",
+    answers: [
+      {
+        option: "Leave",
+        detail: "",
+        data: {"cost": -5000},
+        requirements: {"cost": 5000},
+        response: "Although the cost is high you're not willing to risk waiting any longer."
+      },
+      {
+        option: "Wait",
+        detail: "",
+        data: {"challenges": 2, "inventory": 10},
+        response: "It is a difficult decision to wait for another day, but your cousin's friend seems convinced that a cheaper truck will come along in a few days. Your cousin's friend brings you and your family to an abandonned house where he says you are to stay hidden for a few days. He leaves you with a supply of food and water."
+      },
+    ],
+    challenges: [
+      {
+        scenario: "Two days later your youngest child becomes ill. At first you attempt to manage the illness on your own, but the child's symptoms worsen over night with fever and lack of appetite.",
+        action: "Do you wait, or look for help?",
+        answers: [
+          {
+            option: "Wait",
+            detail: "",
+            data: {"inventory": -1},
+            requirements: {"inventory": 1},
+            response: "The child worsens over the course of the next day, and you are forced to use much of your remaining water to keep her from becoming dehydrated. Thankfully, she seems to pull through that evening, and is better by morning, although is still quite weak."
+          },
+          {
+            option: "Find supplies.",
+            deatil: "",
+            data: {"inventory": 1, "money": -500},
+            requirements: {"money": 500},
+            response: "You quietly leave the house and find your way to a local market. There is little to choose from, but you are able to buy some [Tylenol] and return to the house without rousing any suspicions. After administering the [Tylenol] the child is able to sleep through the night and wakes the next morning feeling better, but weak."
+          },
+          {
+            option: "Find a doctor",
+            detail: "",
+            data: {"inventory": 1, "money": -5000},
+            requirements: {"money": 5000},
+            response: "You find a doctor, but the doctor refuses to follow unless you pay a hefty sum of money. Upon examining the child the doctor declares her ill with the flu, proscribes [Tylenol] and fluids, then returns to his practice. Your child sleeps through the night and wakes in the morning feeling better, but weak."
+          },
+        ],
+      },
+      {
+        scenario: "A day later you realize that some of your food has begun to spoil. If you throw the food away you'll risk hunger.",
+        action: "Do you throw the food away, or salvage what can be salvaged?",
+        answers: [
+          {
+            option: "Throw it away",
+            detail: "",
+            data: {"inventory": -2},
+            response: "Although you begin to feel hungry after a short time on lower rations, you share most of your portion with your children."
+          },
+          {
+            option: "Forage",
+            detail: "",
+            data: {"inventory": -1},
+            response: "You search around the town under cover of darkness to avoid detection. You manage to find some some fruit trees in a nearby yard. This helps somewhat."
+          },
+          {
+            option: "Salvage it",
+            detail: "",
+            data: {"inventory": -2},
+            response: "You give the best food to your youngest children and save some of the partially spoiled food for yourself. You nearly gag on the second mouthful, but you manage to choke it down. The next day you go hungry, and thankfully don't get sick."
+          },
+        ],
+      },
+      {
+        scenario: "On the third night you hear shots fired and a commotion nearby. You know that to go outside would be dangerous, but you worry that it may be more dangerous to stay put.",
+        action: "Do you go out to look, or stay hidden?",
+        answers: [
+          {
+            option: "Stay hidden",
+            detail: "",
+            data: {},
+            response: "The fighting seems to intensify briefly, then moves on further into the town. You spend a sleepless night listening for footsteps upstairs."
+          },
+          {
+            option: "Observe from window",
+            detail: "",
+            data: {},
+            response: "No one notices you as you watch from the darkend second-story bedroom. There isn't much to see, but the occasional bright flash lights up the sky. It seems that the worst of the fighting has moved further into town."
+          },
+          {
+            option: "Go outside",
+            detail: "",
+            data: {},
+            response: "You carefully open the door to the street and step outside and just as you do a bullet whizes by your head and embeds itself into a concrete wall to your left. You scramble back into the house, breathing heavily and tensely watching the door for any sign of movement. You sit for a long time. Eventually you return to your family hidden downstairs."
+          },
+        ],
+      },
+    ],
+    chapter: 1
+  },
+  {
+    scenario: "The wait is finally over when you find someone willing to arrange transportation for you and your family. You have two options for getting across the border: Either you can be smuggled across in a transport truck at a cost of $2000 per family member; or, your contact can arrange for a driver to take the entire family to an quiet area of the border, at which point you would be left to walk across unaided.The second option is cheaper, costing only $10000 for the entire family, but much more risky.",
+    action: "Which do you choose?",
+    answers: [
+      {
+        option: "The transport truck",
+        detail: "The transport truck is expensive, but less risky.",
+        data: {"money":-10000},
+        requirements: {"money": 10000},
+        response: "You pay your contact the $10000. The truck arrives later that night and you and your family are shuffled inside, along with a couple other families and individuals. Everyone looks harried and afraid. It's dark inside the truck, but one family has brought a flashlight."
+      },
+      {
+        option: "Cross on foot",
+        detail: "Crossing on foot is cheaper, but more dangerous.",
+        data: {"money":-3000},
+        requirements: {"money": 3000},
+        response: "You pay your contact the $3000. The driver arrives that night with a cargo van. There is a lumpy mattress and some dirty blankets in the back. You and your family hide yourselves among sacks of rice and bags of clothes."
+      },
+    ],
+    challenges: [
+      {
+        scenario: "After some hours of travel the truck stops. You around at the others and see your own fear reflected back. The back door of the container is noisily unlocked and the door pulled open.The driver enters the truck and explains that the border is near, but there are more security forces that anticipated. You will need to pay an additional $2000 per family member to cross.",
+        action: "What do you do?",
+        answers: [
+          {
+            option: "Pay the additional cost",
+            detail: "Paying the additional cost will significantly reduce your funds, but you've almost made it across the border.",
+            data: {"money":-5000},
+            requirements: {"money": 5000},
+            response: "You point out your family to the driver and hand the money over. It's difficult to do, but you know it will be worth the cost, with the border so close."
+          },
+          {
+            option: "Negotiate the cost",
+            detail: "You don't have enough money, but you're willing to give everything you have left.",
+            data: {"money":-3000},
+            requirements: {"money": 3000},
+            response: "You tell the driver you have little money and many family members and ask to pay $1000 per family member. The driver initially refuses, but relents when you up your offer to $1500 per family member."
+          },
+          {
+            option: "Refuse to pay.",
+            detail: "You'll need the money on the other side of the border, and you're willing to take the chance that you'll have to cross on foot. Although you'll have lost all the money you already spent to get this far.",
+            data: {},
+            response: "The driver stands firm and forces you and your family out of the truck at gunpoint. As the truck pulls away you turn in the direction of the border and start walking, motioning for your family to follow. Your only hope is that you can find a stretch of unmanned border to cross at..."
+          },
+        ],
+      },
+      {
+        scenario: "You have been on the road for some hours when a fierce storm strikes, forcing the vehicle off the road. Other people in the truck less well-provisioned are running out of food and water.",
+        action: "Do you share your food and water?",
+        answers: [
+          {
+            option: "Share your food and water.",
+            detail: "Although you have very little left, you see that some people are in much worse off shape.",
+            data: {"inventory": -2},
+            requirements: {"inventory": 2},
+            response: "Although you have little left for yourself and your family, you decide to share what you have. Those you share with smile gratefully."
+          },
+          {
+            option: "Keep the food and water for your family.",
+            detail: "You feel sorry for the others who have less, but you must take care of your family first.",
+            data: {"inventory": -1},
+            requirements: {"inventory": 1},
+            response: "You see others in the truck looking at you sideways while you and your family eat. You wish you could explain to them the hardship you've already endured, and why you cannot share, but you know that your words would not be enough."
+          },
+          {
+            option: "???",
+            data: {},
+            response: "???"
+          },
+        ],
+      },
+      {
+        scenario: "After some hours of travel the driver pulls the vehicle over and states that the border is within walking distance, but is still quite far away. He explains that he will drive you closer to the border if you pay an additional $2000 per family member.",
+        action: "What do you do?",
+        answers: [
+          {
+            option: "Pay the additional cost.",
+            detail: "Paying the additional cost will significantly reduce your funds, but you've almost made it across the border.",
+            data: {"money": -5000},
+            requirements: {"money": 5000},
+            response: "The driver thanks you then starts up the van and drives another hour before dropping you and your family off. He points in the direction of the border, wishes you luck, and drives away. You shoulder your pack and begin the long and dangerous walk, hoping that you can complete it before sunrise."
+          },
+          {
+            option: "Negotiate the cost.",
+            detail: "You don't have enough money, but you're willing to give everything you have left.",
+            data: {"money": -3000},
+            requirements: {"money": 3000},
+            response: "You tell the driver you have little money and many family members and ask to pay $1000 per family member. The driver initially refuses, but relents when you up your offer to $1500 per family member."
+          },
+          {
+            option: "Refuse to pay.",
+            detail: "You'll need the money on the other side of the border, and you're willing to take the chance that you'll have to cross on foot. Although you'll have lost all the money you already spent to get this far.",
+            data: {},
+            response: "The driver opens the door and asks you to step out. Once the van is gone you shoulder your pack and start the long walk towards the border, knowing that this is very well likely to be the most dangerous part of the journey."
+          },
+        ],
+      },
+    ],
+    chapter: 1
+  }
+]

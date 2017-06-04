@@ -106,8 +106,8 @@
         s.addEventListener("click", function() {
           gameState.chosenOption = answerObj[i];
           updateScore(answerObj[i]);
-          if (gameState.challenges.length === 0) {
-            gameState.challenges = chooseChallenges(gameState.chosenOption.data.challenges,gameState.scenario.challenges);
+          if (gameState.currentChallenges.length === 0) {
+            gameState.currentChallenges = chooseChallenges(gameState.chosenOption.data.challenges,gameState.currentScenario.challenges);
           }
           requestAnimationFrame(advanceState);
         });
@@ -163,9 +163,9 @@
       promise generated from this object and resolves it on click. */
   function displayScenario(obj) {
     //generate the new promise based on the question
-    createPText(gameState.scenario.scenario, scenario);
-    createPText(gameState.scenario.action, action);
-    createButtons(gameState.scenario.answers, options);
+    createPText(gameState.currentScenario.scenario, scenario);
+    createPText(gameState.currentScenario.action, action);
+    createButtons(gameState.currentScenario.answers, options);
 
   }
 
@@ -204,11 +204,12 @@
     return arr;
   }
 
-  function initGame() {
+  function initGame(chapter) {
     //use this space to call on the arrays from questionBank - or maybe put
     //it in a seperate function and use Promise.all in setupGame then this
     //becomes initGameState
 
+    gameState.chapter = chapter;
     gameState.family = 5;
     gameState.money = 0;
     gameState.inventory = 0;
@@ -231,22 +232,56 @@
 
     //NEEDED: state for max questions, and max eras?
 
-    gameState.scenario = {};
-    gameState.challenges = [];
+    gameState.currentScenario = {};
+    gameState.currentChallenges = [];
+
+  }
+
+  function retrieveQB(chapter) {
+    console.log("retrieving QB");
+    return new Promise(function(resolve, reject) {
+      var httpRequest = new XMLHttpRequest();
+      httpRequest.open('GET','data.json');
+      httpRequest.onload = function() {
+        if (httpRequest.status >= 200 && httpRequest.status < 300) {
+          var json = JSON.parse(httpRequest.responseText);
+          gameState.questionBank = json.filter(function(row) {
+            if (row.chapter === chapter) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          resolve();
+        } else {
+          reject({
+              status: this.status,
+              statusText: httpRequest.statusText
+          });
+        }
+      };
+      httpRequest.onerror = function() {
+        reject({
+          status: this.status,
+          statusText: httpRequest.statusText
+        });
+      };
+      httpRequest.send();
+    });
   }
 
   function startScenario() {
     //set state
     gameState.playEntering = true;
-    //gameState.challenges = [];
+    //gameState.currentChallenges = [];
 
-    if (gameState.challenges.length > 0) {
-      //gameState.challenges = chooseChallenges(gameState.numChallenges,gameState.scenario.challenges);
-      gameState.scenario = gameState.challenges.shift();
+    if (gameState.currentChallenges.length > 0) {
+      //gameState.currentChallenges = chooseChallenges(gameState.numChallenges,gameState.currentScenario.challenges);
+      gameState.currentScenario = gameState.currentChallenges.shift();
     } else {
       gameState.iterator++;
       //grab new object
-      gameState.scenario = getNewScenario(questionBank);
+      gameState.currentScenario = getNewScenario(gameState.questionBank);
     }
 
     //start run state
@@ -291,6 +326,7 @@
 
   //should I pass in the entire question bank, or part of it?
   function getNewScenario(qb) {
+    console.log(qb);
     return qb[gameState.iterator];
   }
 
@@ -306,9 +342,9 @@
   }
 
   function setupGame() {
-    console.log("In app.js from local storage: " + localStorage.getItem('chapter'));
-    //use this string to build a filter, which is applied in getNewScenario
-    return Promise.resolve(initGame())
+    //return Promise.resolve(initGame(localStorage.getItem('chapter')))
+    var chapterVal = parseInt(localStorage.getItem('chapter'),10);
+    return Promise.all([initGame(chapterVal), retrieveQB(chapterVal)])
 		.then(advanceState);
 	}
 
