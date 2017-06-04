@@ -306,6 +306,8 @@
   }
 
   function setupGame() {
+    console.log("In app.js from local storage: " + localStorage.getItem('chapter'));
+    //use this string to build a filter, which is applied in getNewScenario
     return Promise.resolve(initGame())
 		.then(advanceState);
 	}
