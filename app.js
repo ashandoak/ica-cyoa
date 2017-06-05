@@ -57,17 +57,34 @@
   // NEEDED: onResize function
 	//$window.on("resize",onResize);
 
+  // function setupColorScheme(cv) {
+  //   var cssColorRule = document.createElement("style");
+  //   cssColorRule.type = "text/css";
+  //   switch(cv) {
+  //     case 2:
+  //       cssColorRule.innerHTML = "body {color: #EEEEEE !important; background-color: #F4911E !important;} .buttonColor {color: #0079A7;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #1890C4;} .buttonDisabledColor:hover {color: #555;}";
+  //       break;
+  //     case 3:
+  //       cssColorRule.innerHTML = "body {color: #FFFFFF !important; background-color: #98D819 !important;} .buttonColor {color: #69008B;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #A919D8;} .buttonDisabledColor:hover {color: #555;}";
+  //       break;
+  //     default:
+  //       cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
+  //   }
+  //   document.body.appendChild(cssColorRule);
+  // }
+
   function setupColorScheme(cv) {
     var cssColorRule = document.createElement("style");
     cssColorRule.type = "text/css";
     switch(cv) {
       case 2:
-        cssColorRule.innerHTML = "body {color: #EEEEEE !important; background-color: #F4911E !important;} .buttonColor {color: #0079A7;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #1890C4;} .buttonDisabledColor:hover {color: #555;}";
+        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
         break;
       case 3:
-        cssColorRule.innerHTML = "body {color: #FFFFFF !important; background-color: #98D819 !important;} .buttonColor {color: #69008B;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #A919D8;} .buttonDisabledColor:hover {color: #555;}";
+        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
         break;
       default:
+        //background-image: url('ica-logo-orange.png'); background-repeat: no-repeat; background-size: 400px 400px;
         cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
     }
     document.body.appendChild(cssColorRule);
@@ -109,13 +126,22 @@
       s.classList.add("button", "buttonColor");
       d.appendChild(s);
       //createPText(answerObj[i].option, d);
-      if (answerObj[i].requirements) {
+      if (answerObj[i].requirements && Object.keys(answerObj[i].requirements).length != 0) {
         for (var r in answerObj[i].requirements) {
           if ((r === "money" && answerObj[i].requirements[r] > gameState.money) ||
               (r === "cost" && answerObj[i].requirements[r]*gameState.family > gameState.money) ||
               (r === "family" && answerObj[i].requirements[r] > gameState.family) ||
               (r === "inventory" && answerObj[i].requirements[r] > gameState.inventory)) {
                 s.classList.add("buttonDisabledColor");
+          } else {
+            s.addEventListener("click", function() {
+              gameState.chosenOption = answerObj[i];
+              updateScore(answerObj[i]);
+              if (gameState.currentChallenges.length === 0) {
+                gameState.currentChallenges = chooseChallenges(gameState.chosenOption.data.challenges,gameState.currentScenario.challenges);
+              }
+              requestAnimationFrame(advanceState);
+            });
           }
         }
       } else {
@@ -140,9 +166,9 @@
 
   function resetAnim(div, anim) {
     if (hasClass(div, anim)) {
-      div.classList.remove("fadeIn");
+      div.classList.remove(anim);
       void div.offsetWidth;
-      div.classList.add("fadeIn");
+      div.classList.add(anim);
     }
   }
 
@@ -178,8 +204,42 @@
       question/options/data/response information for one round. It returns a
       promise generated from this object and resolves it on click. */
   function displayScenario(obj) {
-    //generate the new promise based on the question
-    createPText(gameState.currentScenario.scenario, scenario);
+    if (typeof gameState.currentScenario.scenario === 'string') {
+      createPText(gameState.currentScenario.scenario, scenario);
+    } else {
+      var textA = gameState.currentScenario.scenario.textA;
+      var textLink = gameState.currentScenario.scenario.textLink;
+      var textB = gameState.currentScenario.scenario.textB;
+      var detailImage = gameState.currentScenario.scenario.detailImage;
+      var detailText = gameState.currentScenario.scenario.detailText;
+
+      var p = document.createElement("p");
+      var spanA = document.createElement("span");
+      var spanB = document.createElement("span");
+      var button = document.createElement("button");
+
+      spanA.innerHTML = textA;
+      spanB.innerHTML = textB;
+
+      button.innerHTML = textLink;
+      button.addEventListener("click", function() {
+        var di = new Image();
+        di.onload = function() {
+          detailImageContainer.src = this.src;
+          detailTextContainer.innerHTML = detailText;
+          detailContainer.classList.remove("hidden");
+          resetAnim(detailContainer, 'fadeIn');
+        };
+        di.src = detailImage;
+      })
+
+      p.appendChild(spanA);
+      p.appendChild(button);
+      p.appendChild(spanB);
+
+      scenario.appendChild(p);
+
+    }
     createPText(gameState.currentScenario.action, action);
     createButtons(gameState.currentScenario.answers, options);
 
@@ -367,10 +427,25 @@
     }
   }
 
+  function introChapter() {
+    var h1 = document.createElement("h1");
+    h1.innerHTML = "CHAPTER " + gameState.chapter.toString();
+    scenario.appendChild(h1);
+    scenario.setAttribute("style", "height: 400px; background-image: url('ica-logo-orange.png'); background-size: 400px; background-repeat: no-repeat; padding-top: 160px; padding-left: 100px;")
+
+    resetAnim(gameContainer, 'fadeIn');
+
+    setTimeout(function() {
+      clearDiv([scenario]);
+      scenario.setAttribute("style", "background-image: none;")
+      advanceState();
+    }, 3000);
+  }
+
   function setupGame(cv) {
     //return Promise.resolve(initGame(localStorage.getItem('chapter')))
     return Promise.all([setupColorScheme(cv), initGame(cv), retrieveQB(cv)])
-		.then(advanceState);
+		.then(introChapter);
 	}
 
 })();

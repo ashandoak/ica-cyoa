@@ -1,21 +1,27 @@
 [
   {
     "chapter": 1,
-    "scenario": "The front-line fighting has been inching closer and closer to your town in recent months and you decide you must leave for the sake of your spouse and three children. You can leave immediately, with the bare essentials, or you can stay and collect supplies for a few days at the risk of the fighting coming closer.",
+    "scenario": {
+      "textA": "The front-line fighting has been inching closer and closer to your town in recent months and you decide you must leave for the sake of your spouse and three children. You can leave immediately, with the ",
+      "textLink": "bare essentials",
+      "textB": ", or you can stay and collect supplies for a few days at the risk of the fighting coming closer.",
+      "detailImage": "child-boat-refugee.jpg",
+      "detailText": "According to data from [...], refugees from [...] often arrive with [...]. Do you know what you would take with you, if you had to leave in a hurry?"
+    },
     "action": "Do you leave immediately, or wait?",
     "answers": [
       {
         "option": "Wait",
         "detail": "",
         "data": {"challenges": 2},
-        "response": "Over the next few days you collect as much in the way of supplies as you can carry. You do face some challenges, however...",
-        "image": "child-boat-refugee.jpg",
-        "imageText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna est, sagittis eget pretium quis, finibus vel nibh. Vivamus nisi lacus, hendrerit sit amet massa eu, volutpat consectetur mauris. Donec viverra nisi at elit vestibulum, in pretium tellus commodo. Morbi auctor sed eros eu interdum. Cras in congue lectus, non ullamcorper enim. Cras mollis eget nibh nec porta. Phasellus eget ligula sed lacus rutrum commodo. Sed dignissim leo sed pulvinar porttitor."
+        "requirements": {"money": 0},
+        "response": "Over the next few days you collect as much in the way of supplies as you can carry. You do face some challenges, however..."
       },
       {
         "option": "Leave",
         "detail": "You have to take care of your own family first.",
         "data": {"challenges": 0},
+        "requirements": {"money": 0},
         "response": "You gather your family as quickly as you can and leave everything - and everyone else - behind."
       }
     ],
@@ -28,18 +34,21 @@
             "option": "Accept",
             "detail": "",
             "data": {"family": -1},
+            "requirements": {"money": 0},
             "response": "Your son thanks you and wishes you well. He remains with the family until you are ready to depart. As you wave goodbye you hope it is not the last time you will see him."
           },
           {
             "option": "Compromise",
             "detail": "",
             "data": {"money": -5000, "inventory": -5},
+            "requirements": {"money": 0},
             "response": "You give your son some of the food and money you have collected and tell him he may use it to help as many of those he can in the coming days, but he cannot stay behind. Although he is disappointed, your son respects your compromise."
           },
           {
             "option": "Deny",
             "detail": "",
             "data": {},
+            "requirements": {"money": 0},
             "response": "Although your son is angry and argues he recognizes that he is needed to help his younger siblings to safety, and so agrees to come with you."
           }
         ]
@@ -52,18 +61,21 @@
             "option": "Bring them",
             "detail": "",
             "data": {"inventory":-2},
+            "requirements": {"money": 0},
             "response": "Both children are ecstaic and thank you. You know they are too young too completely understand the dangers, yet it makes you smile to see them happy."
           },
           {
             "option": "Compromise",
             "detail": "",
             "data": {"ìnventory": -1},
+            "requirements": {"money": 0},
             "response": "You allow the children to bring one toy between them. They are disappointed, but are able to choose a toy they will both enjoy and will be able to share."
           },
           {
             "option": "Deny them",
             "detail": "",
             "data": {},
+            "requirements": {"money": 0},
             "response": "It breaks your heart to see both your children so upset. You tell yourself it is for the best - you will need the food and water."
           }
         ]
@@ -76,18 +88,21 @@
             "option": "Bring both",
             "detail": "",
             "data": {"family": 2, "money": 5000, "inventory": 10},
+            "requirements": {"money": 0},
             "response": "Your uncle and cousin are grateful that you are willing to help them. They've brought some food and money to contribute to the journey."
           },
           {
             "option": "Bring one",
             "detail": "",
             "data": {"family": 1, "money": 2000, "inventory": 4},
+            "requirements": {"money": 0},
             "response": "Your uncle's advanced age would make travel on foot difficult. You decide to bring your cousin along, and promise to come back for your uncle as soon as you can."
           },
           {
             "option": "Leave them",
             "detail": "",
             "data": {},
+            "requirements": {"money": 0},
             "response": "Your uncle and cousin are disappointed when you tell them, but they understand the challenges you face. You hug them tight at your parting, and feel shame as you walk away."
           }
         ]
@@ -104,7 +119,9 @@
         "detail": "",
         "data": {"cost": -5000},
         "requirements": {"cost": 5000},
-        "response": "Although the cost is high you're not willing to risk waiting any longer."
+        "response": "Although the cost is high you're not willing to risk waiting any longer.",
+        "image": "child-boat-refugee.jpg",
+        "imageText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna est, sagittis eget pretium quis, finibus vel nibh. Vivamus nisi lacus, hendrerit sit amet massa eu, volutpat consectetur mauris. Donec viverra nisi at elit vestibulum, in pretium tellus commodo. Morbi auctor sed eros eu interdum. Cras in congue lectus, non ullamcorper enim. Cras mollis eget nibh nec porta. Phasellus eget ligula sed lacus rutrum commodo. Sed dignissim leo sed pulvinar porttitor."
       },
       {
         "option": "Wait",
