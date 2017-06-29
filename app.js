@@ -1,8 +1,7 @@
 (function Game(){
   "use strict";
 
-  var viewportDims = {},
-      scenario = document.getElementById('scenario'),
+  var scenario = document.getElementById('scenario'),
       action = document.getElementById('action'),
       options = document.getElementById('options'),
       detailContainer = document.getElementById('detail-container'),
@@ -10,7 +9,6 @@
       detailTextContainer = document.getElementById('detail-text'),
       gameContainer = document.getElementById('game-container'),
       logoContainer = document.getElementById('logo-container'),
-
       score = document.getElementById('score'),
 
       chapterVal = parseInt(localStorage.getItem('chapter'),10),
@@ -27,13 +25,13 @@
     cssColorRule.type = "text/css";
     switch(cv) {
       case 1:
-        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonDisabledColor {color: #555;} .buttonEnabledColor {color: #f3901d;} .buttonEnabledColor:hover {color: #FF971E;}";
+        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;}";
         break;
       case 2:
-        cssColorRule.innerHTML = "body {color: #E1E1E1 !important; background-color: #646464 !important;} .buttonDisabledColor {color: #555;} .buttonEnabledColor {color: #f3901d;} .buttonEnabledColor:hover {color: #FF971E;}";
+        cssColorRule.innerHTML = "body {color: #E1E1E1 !important; background-color: #646464 !important;}";
         break;
       case 3:
-        cssColorRule.innerHTML = "body {color: #595959 !important; background-color: #FFFFFF !important;} .buttonDisabledColor {color: #555;} .buttonEnabledColor {color: #f3901d;} .buttonEnabledColor:hover {color: #FF971E;}";
+        cssColorRule.innerHTML = "body {color: #595959 !important; background-color: #FFFFFF !important;}";
         break;
     }
     document.body.appendChild(cssColorRule);
@@ -45,7 +43,7 @@
     if (typeof data === "string") { s.innerHTML = data; }
     else if (typeof data === "object") { s.innerHTML = data.option; }
 
-    if (enabled) { s.classList.add("button", "buttonEnabledColor"); }
+    if (enabled) { s.classList.add("button"); }
     else { s.classList.add("button", "buttonDisabledColor"); }
 
     if (enabled) {
@@ -144,12 +142,13 @@
       var p = document.createElement("p");
       var spanA = document.createElement("span");
       var spanB = document.createElement("span");
-      var button = document.createElement("button");
+      var link = document.createElement("span");
+      link.classList.add("text-link");
 
       spanA.innerHTML = data.textA;
       spanB.innerHTML = data.textB;
-      button.innerHTML = data.textLink;
-      button.addEventListener("click", function() {
+      link.innerHTML = data.textLink;
+      link.addEventListener("click", function() {
         var di = new Image();
         di.onload = function() {
           detailImageContainer.src = this.src;
@@ -161,7 +160,7 @@
       })
 
       p.appendChild(spanA);
-      p.appendChild(button);
+      p.appendChild(link);
       p.appendChild(spanB);
 
       div.appendChild(p);
