@@ -16,6 +16,21 @@
     /* Margin bottom by footer height */
     //margin-bottom: 60px;
   }
+
+  .pageFadeOut {
+    animation-name: fadeOutAnim;
+    animation-duration: 3s;
+  }
+
+  @keyframes fadeOutAnim {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+  }
+
   /*.footer {
     position: absolute;
     bottom: 0;
@@ -120,9 +135,9 @@
     var inputElement = document.createElement('input');
     var c1 = document.getElementById("chapter1");
     inputElement.type = "button"
-    inputElement.addEventListener('click', function(){
-        console.log("output");
-    });
+    // inputElement.addEventListener('click', function(){
+    //     console.log("output");
+    // });
 
     //c1.appendChild(inputElement);​
 

@@ -2,113 +2,66 @@
   "use strict";
 
   var viewportDims = {},
+      scenario = document.getElementById('scenario'),
+      action = document.getElementById('action'),
+      options = document.getElementById('options'),
+      detailContainer = document.getElementById('detail-container'),
+      detailImageContainer = document.getElementById('detail-image'),
+      detailTextContainer = document.getElementById('detail-text'),
+      gameContainer = document.getElementById('game-container'),
+      logoContainer = document.getElementById('logo-container'),
 
-		/*
-    // Maybe use these to access div elements below, rather than vars
-    $window = $(window),
-		$document = $(document),
-    */
+      score = document.getElementById('score'),
 
-    scenario = document.getElementById('scenario'),
-    action = document.getElementById('action'),
-    options = document.getElementById('options'),
-    detailContainer = document.getElementById('detail-container'),
-    detailImageContainer = document.getElementById('detail-image'),
-    detailTextContainer = document.getElementById('detail-text'),
-    gameContainer = document.getElementById('game-container'),
+      chapterVal = parseInt(localStorage.getItem('chapter'),10),
 
-    score = document.getElementById('score'),
+  		gameState = {},
 
-    chapterVal = parseInt(localStorage.getItem('chapter'),10),
-
-		orientationLocked = false,
-		lockOrientation =
-			(window.screen.lockOrientation ?
-				window.screen.lockOrientation.bind(window.screen) : null
-			) ||
-			(window.screen.mozLockOrientation ?
-				window.screen.mozLockOrientation.bind(window.screen) : null
-			) ||
-			(window.screen.msLockOrientation ?
-				window.screen.msLockOrientation.bind(window.screen) : null
-			) ||
-			((window.screen.orientation && window.screen.orientation.lock) ?
-				window.screen.orientation.lock.bind(window.screen.orientation) : null
-			) ||
-			null,
-
-		gameState = {},
-
-		touch_disabled = false,
-
-		DEBUG = true;
-
-	// initialize UI
-	Promise.all([
-		//Include function here for making sure document is loaded?
-		//Include function here to make sure all external scripts are loaded?
-    checkOrientation(),
-	])
-	//then for checking viewport and size?
-	.then(setupGame(chapterVal));
+  		DEBUG = true;
 
 
-	// respond to window resizes
-  // NEEDED: onResize function
-	//$window.on("resize",onResize);
-
-  // function setupColorScheme(cv) {
-  //   var cssColorRule = document.createElement("style");
-  //   cssColorRule.type = "text/css";
-  //   switch(cv) {
-  //     case 2:
-  //       cssColorRule.innerHTML = "body {color: #EEEEEE !important; background-color: #F4911E !important;} .buttonColor {color: #0079A7;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #1890C4;} .buttonDisabledColor:hover {color: #555;}";
-  //       break;
-  //     case 3:
-  //       cssColorRule.innerHTML = "body {color: #FFFFFF !important; background-color: #98D819 !important;} .buttonColor {color: #69008B;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #A919D8;} .buttonDisabledColor:hover {color: #555;}";
-  //       break;
-  //     default:
-  //       cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
-  //   }
-  //   document.body.appendChild(cssColorRule);
-  // }
+  setupGame(chapterVal);
 
   function setupColorScheme(cv) {
     var cssColorRule = document.createElement("style");
     cssColorRule.type = "text/css";
     switch(cv) {
+      case 1:
+        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonDisabledColor {color: #555;} .buttonEnabledColor {color: #f3901d;} .buttonEnabledColor:hover {color: #FF971E;}";
+        break;
       case 2:
-        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
+        cssColorRule.innerHTML = "body {color: #E1E1E1 !important; background-color: #646464 !important;} .buttonDisabledColor {color: #555;} .buttonEnabledColor {color: #f3901d;} .buttonEnabledColor:hover {color: #FF971E;}";
         break;
       case 3:
-        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
+        cssColorRule.innerHTML = "body {color: #595959 !important; background-color: #FFFFFF !important;} .buttonDisabledColor {color: #555;} .buttonEnabledColor {color: #f3901d;} .buttonEnabledColor:hover {color: #FF971E;}";
         break;
-      default:
-        //background-image: url('ica-logo-orange.png'); background-repeat: no-repeat; background-size: 400px 400px;
-        cssColorRule.innerHTML = "body {color: #D4D4D4 !important; background-color: #202020 !important;} .buttonColor {color: #438456;} .buttonDisabledColor {color: #555;} .buttonColor:hover {color: #5DB877;} .buttonDisabledColor:hover {color: #555;}";
     }
     document.body.appendChild(cssColorRule);
   }
 
-  //Not entirely sure how this works... or if it works...
-  function checkOrientation() {
-		return Promise.resolve(
-				lockOrientation ?
-					lockOrientation("landscape") :
-					Promise.reject()
-			)
-			.then(
-				function onLocked() {
-					orientationLocked = true;
-				},
-				function onNotLocked() {}
-			);
-	}
+  function createButton(data, div, enabled) {
+    var s = document.createElement("span");
 
-  function createPText(text, div) {
-    var p = document.createElement("p");
-    p.innerHTML = text;
-    div.appendChild(p);
+    if (typeof data === "string") { s.innerHTML = data; }
+    else if (typeof data === "object") { s.innerHTML = data.option; }
+
+    if (enabled) { s.classList.add("button", "buttonEnabledColor"); }
+    else { s.classList.add("button", "buttonDisabledColor"); }
+
+    if (enabled) {
+      s.addEventListener("click", function() {
+        if (typeof data === "object") {
+          gameState.chosenOption = data;
+          updateScore(data);
+          if (gameState.currentChallenges.length === 0) {
+            gameState.currentChallenges = chooseChallenges(gameState.chosenOption.data.challenges,gameState.currentScenario.challenges);
+          }
+        }
+        requestAnimationFrame(advanceState);
+      });
+    }
+
+    div.appendChild(s);
   }
 
   function createButtons(answerObj, div) {
@@ -118,42 +71,25 @@
       var colSize = "col-sm-6";
     }
 
+    var enableButton = true;
+
     for (let i=0; i < answerObj.length; i++) {
       var d = document.createElement("div");
       d.classList.add(colSize);
-      var s = document.createElement("span");
-      s.innerHTML = answerObj[i].option;
-      s.classList.add("button", "buttonColor");
-      d.appendChild(s);
-      //createPText(answerObj[i].option, d);
+
       if (answerObj[i].requirements && Object.keys(answerObj[i].requirements).length != 0) {
         for (var r in answerObj[i].requirements) {
           if ((r === "money" && answerObj[i].requirements[r] > gameState.money) ||
               (r === "cost" && answerObj[i].requirements[r]*gameState.family > gameState.money) ||
               (r === "family" && answerObj[i].requirements[r] > gameState.family) ||
               (r === "inventory" && answerObj[i].requirements[r] > gameState.inventory)) {
-                s.classList.add("buttonDisabledColor");
-          } else {
-            s.addEventListener("click", function() {
-              gameState.chosenOption = answerObj[i];
-              updateScore(answerObj[i]);
-              if (gameState.currentChallenges.length === 0) {
-                gameState.currentChallenges = chooseChallenges(gameState.chosenOption.data.challenges,gameState.currentScenario.challenges);
-              }
-              requestAnimationFrame(advanceState);
-            });
+                enableButton = false;
           }
         }
-      } else {
-        s.addEventListener("click", function() {
-          gameState.chosenOption = answerObj[i];
-          updateScore(answerObj[i]);
-          if (gameState.currentChallenges.length === 0) {
-            gameState.currentChallenges = chooseChallenges(gameState.chosenOption.data.challenges,gameState.currentScenario.challenges);
-          }
-          requestAnimationFrame(advanceState);
-        });
       }
+
+      createButton(answerObj[i], d, enableButton);
+
       div.appendChild(d);
     }
   }
@@ -199,76 +135,58 @@
     }
   }
 
-
-  /*  displayScenario accepts an object that contains all
-      question/options/data/response information for one round. It returns a
-      promise generated from this object and resolves it on click. */
-  function displayScenario(obj) {
-    if (typeof gameState.currentScenario.scenario === 'string') {
-      createPText(gameState.currentScenario.scenario, scenario);
-    } else {
-      var textA = gameState.currentScenario.scenario.textA;
-      var textLink = gameState.currentScenario.scenario.textLink;
-      var textB = gameState.currentScenario.scenario.textB;
-      var detailImage = gameState.currentScenario.scenario.detailImage;
-      var detailText = gameState.currentScenario.scenario.detailText;
-
+  function createPText(data, div) {
+    if (typeof data === 'string') {
+      let p = document.createElement("p");
+      p.innerHTML = data;
+      div.appendChild(p);
+    } else if (typeof data === 'object') {
       var p = document.createElement("p");
       var spanA = document.createElement("span");
       var spanB = document.createElement("span");
       var button = document.createElement("button");
 
-      spanA.innerHTML = textA;
-      spanB.innerHTML = textB;
-
-      button.innerHTML = textLink;
+      spanA.innerHTML = data.textA;
+      spanB.innerHTML = data.textB;
+      button.innerHTML = data.textLink;
       button.addEventListener("click", function() {
         var di = new Image();
         di.onload = function() {
           detailImageContainer.src = this.src;
-          detailTextContainer.innerHTML = detailText;
+          detailTextContainer.innerHTML = data.detailText;
           detailContainer.classList.remove("hidden");
           resetAnim(detailContainer, 'fadeIn');
         };
-        di.src = detailImage;
+        di.src = data.detailImage;
       })
 
       p.appendChild(spanA);
       p.appendChild(button);
       p.appendChild(spanB);
 
-      scenario.appendChild(p);
+      div.appendChild(p);
 
     }
+  }
+
+  /*  displayScenario accepts an object that contains all
+      question/options/data/response information for one round. It returns a
+      promise generated from this object and resolves it on click. */
+  function displayScenario(obj) {
+
+    createPText(gameState.currentScenario.scenario, scenario);
     createPText(gameState.currentScenario.action, action);
     createButtons(gameState.currentScenario.answers, options);
 
   }
+
 
   function displayResponse(obj) {
     clearDiv([scenario,action,options]);
     //clear animation
     resetAnim(gameContainer, 'fadeIn');
     createPText(gameState.chosenOption.response, scenario);
-    var s = document.createElement("span");
-    s.innerHTML = "Continue";
-    s.classList.add("button", "buttonColor");
-    action.appendChild(s);
-
-    s.addEventListener("click", function() {
-      requestAnimationFrame(advanceState);
-    });
-
-    if (gameState.chosenOption.image != null) {
-      var detailImage = new Image();
-      detailImage.onload = function() {
-        detailImageContainer.src = this.src;
-        detailTextContainer.innerHTML = gameState.chosenOption.imageText;
-        detailContainer.classList.remove("hidden");
-        resetAnim(detailContainer, 'fadeIn');
-      };
-      detailImage.src = gameState.chosenOption.image;
-    }
+    createButton("continue", action, true);
   }
 
   function chooseChallenges(numChallenges, challengeArr) {
@@ -314,7 +232,7 @@
   }
 
   function retrieveQB(chapter) {
-    console.log("retrieving QB");
+    if (DEBUG) { console.log("retrieving QB"); }
     return new Promise(function(resolve, reject) {
       var httpRequest = new XMLHttpRequest();
       httpRequest.open('GET','data.json');
@@ -399,8 +317,11 @@
 
   function gameExit() {
     if (gameState.chapter < 3) {
-      gameState.chapter++;
-      setupGame(gameState.chapter);
+      if (gameState.chapter === 1) { document.body.classList.add('backgroundFade1to2'); }
+      if (gameState.chapter === 2) { document.body.classList.add('backgroundFade2to3'); }
+      setTimeout(function() {
+          setupGame(gameState.chapter+1);
+      }, 1500);
     } else {
       scenario.innerHTML = "You Win!"
       var a = document.createElement("a");
@@ -429,21 +350,41 @@
 
   function introChapter() {
     var h1 = document.createElement("h1");
-    h1.innerHTML = "CHAPTER " + gameState.chapter.toString();
-    scenario.appendChild(h1);
-    scenario.setAttribute("style", "height: 400px; background-image: url('ica-logo-orange.png'); background-size: 400px; background-repeat: no-repeat; padding-top: 160px; padding-left: 100px;")
-
-    resetAnim(gameContainer, 'fadeIn');
+    var chapter = gameState.chapter;
+    var logo;
+    switch(chapter) {
+      case 1:
+        h1.innerHTML = "CHAPTER 1";
+        logo = document.getElementById("ica-logo-o");
+        break;
+      case 2:
+        h1.innerHTML = "CHAPTER 2";
+        logo = document.getElementById("ica-logo-op");
+        break;
+      case 3:
+        h1.innerHTML = "CHAPTER 3";
+        logo = document.getElementById("ica-logo-opg");
+        break;
+    }
+    logo.classList.remove("hidden");
+    logoContainer.appendChild(h1);
+    //resetAnim(logo, 'logoFadeIn');
+    logo.classList.add('logoFadeIn');
 
     setTimeout(function() {
-      clearDiv([scenario]);
-      scenario.setAttribute("style", "background-image: none;")
+      logo.classList.add('logoFadeOut');
+    }, 4000)
+
+    setTimeout(function() {
+      // clearDiv([logoContainer]);
+      logoContainer.removeChild(h1);
+      resetAnim(gameContainer, 'fadeIn');
+      logo.classList.add("hidden");
       advanceState();
-    }, 3000);
+    }, 5000);
   }
 
   function setupGame(cv) {
-    //return Promise.resolve(initGame(localStorage.getItem('chapter')))
     return Promise.all([setupColorScheme(cv), initGame(cv), retrieveQB(cv)])
 		.then(introChapter);
 	}

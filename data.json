@@ -218,15 +218,15 @@
       {
         "option": "The transport truck",
         "detail": "The transport truck is expensive, but less risky.",
-        "data": {"money":-10000},
-        "requirements": {"money": 10000},
+        "data": {"money":-100},
+        "requirements": {"money": 100},
         "response": "You pay your contact the $10000. The truck arrives later that night and you and your family are shuffled inside, along with a couple other families and individuals. Everyone looks harried and afraid. It's dark inside the truck, but one family has brought a flashlight."
       },
       {
         "option": "Cross on foot",
         "detail": "Crossing on foot is cheaper, but more dangerous.",
-        "data": {"money":-3000},
-        "requirements": {"money": 3000},
+        "data": {"money":-30},
+        "requirements": {"money": 30},
         "response": "You pay your contact the $3000. The driver arrives that night with a cargo van. There is a lumpy mattress and some dirty blankets in the back. You and your family hide yourselves among sacks of rice and bags of clothes."
       }
     ],
