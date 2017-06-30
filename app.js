@@ -182,7 +182,7 @@
 
 
   function displayResponse(obj) {
-    clearDiv([scenario,action,options]);
+    clearDiv([scenario,action,options,detailContainer]);
     //clear animation
     resetAnim(gameContainer, 'fadeIn');
     createPText(gameState.chosenOption.response, scenario);
