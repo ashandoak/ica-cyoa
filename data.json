@@ -14,15 +14,13 @@
         "option": "Wait",
         "detail": "",
         "data": {"challenges": 2},
-        "requirements": {"money": 10000},
-        "image": "child-boat-refugee.jpg",
-        "imageText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna est, sagittis eget pretium quis, finibus vel nibh. Vivamus nisi lacus, hendrerit sit amet massa eu, volutpat consectetur mauris. Donec viverra nisi at elit vestibulum, in pretium tellus commodo. Morbi auctor sed eros eu interdum. Cras in congue lectus, non ullamcorper enim. Cras mollis eget nibh nec porta. Phasellus eget ligula sed lacus rutrum commodo. Sed dignissim leo sed pulvinar porttitor.",
+        "requirements": {"money": 0},
         "response": "Over the next few days you collect as much in the way of supplies as you can carry. You do face some challenges, however..."
       },
       {
         "option": "Leave",
         "detail": "You have to take care of your own family first.",
-        "data": {"challenges": 0},
+        "data": {"money": 0},
         "requirements": {"money": 0},
         "response": "You gather your family as quickly as you can and leave everything - and everyone else - behind."
       }
@@ -218,8 +216,8 @@
       {
         "option": "The transport truck",
         "detail": "The transport truck is expensive, but less risky.",
-        "data": {"money":-100},
-        "requirements": {"money": 100},
+        "data": {"money":0},
+        "requirements": {"money": 0},
         "response": "You pay your contact the $10000. The truck arrives later that night and you and your family are shuffled inside, along with a couple other families and individuals. Everyone looks harried and afraid. It's dark inside the truck, but one family has brought a flashlight."
       },
       {

@@ -111,15 +111,19 @@
   function updateScore(obj) {
     if (obj.data.family) {
       gameState.family += obj.data.family;
+      if (gameState.family < 0) { gameState.family = 0; }
     }
     if (obj.data.money) {
       gameState.money += obj.data.money;
+      if (gameState.money < 0) { gameState.money = 0; }
     }
     if (obj.data.cost) {
       gameState.money += obj.data.cost*gameState.family;
+      if (gameState.money < 0) { gameState.money = 0; }
     }
     if (obj.data.inventory) {
       gameState.inventory += obj.data.inventory;
+      if (gameState.inventory < 0 ) { gameState.inventory = 0; }
     }
     if (obj.data.challenges) {
       gameState.numChallenges = obj.data.challenges;
