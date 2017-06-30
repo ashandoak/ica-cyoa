@@ -11,7 +11,11 @@
     }
 
     .container {
-        margin-top: 10%;
+        margin-top: 5%;
+    }
+
+    #game-container {
+      max-width: 700px;
     }
 
     .fadeIn {
@@ -108,11 +112,16 @@
     }
 
     .button:hover {
-      color: #FF971E;
+      color: #FAC011;
     }
 
     .buttonDisabledColor {
-      color: #555;
+      color: #888;
+      cursor: default;;
+    }
+
+    .buttonDisabledColor:hover {
+      color: #888;
     }
 
     .text-link {
@@ -129,14 +138,15 @@
     }
 
     #detail-container {
-      margin-top: 20%;
+      margin-top: 5%;
+      max-width: 700px;
     }
-
-    #detail-image-container {
+    /*col-md-8 col-md-offset-2*/
+    /*#detail-image-container {
       border: thick white solid;
       margin-bottom: 2%;
       padding: 0;
-    }
+    }*/
 
   </style>
 </head>
@@ -149,7 +159,7 @@
     </div>
   </div>
   <div class="container col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2">
-    <div id="game-container" class="row fadeIn col-md-8 col-md-offset-2">
+    <div id="game-container" class="row fadeIn">
       <div id="scenario" class="row text-justify">
       </div>
       <div id="action"  class="row lead text-center">
@@ -158,7 +168,8 @@
       </div>
     </div>
     <div id="detail-container" class="row hidden fadeInImg">
-      <div id="detail-image-container" class=" col-md-7"><img id="detail-image" src="" class="img-responsive"/>
+      <div id="detail-image-container" class=" col-md-7">
+        <img id="detail-image" src="" class="img-responsive"/>
       </div>
       <div id="detail-text" class="col-md-5 text-justify">
       </div>

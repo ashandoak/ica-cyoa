@@ -14,7 +14,7 @@
         "option": "Wait",
         "detail": "",
         "data": {"challenges": 2},
-        "requirements": {"money": 0},
+        "requirements": {"money": 10000},
         "image": "child-boat-refugee.jpg",
         "imageText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna est, sagittis eget pretium quis, finibus vel nibh. Vivamus nisi lacus, hendrerit sit amet massa eu, volutpat consectetur mauris. Donec viverra nisi at elit vestibulum, in pretium tellus commodo. Morbi auctor sed eros eu interdum. Cras in congue lectus, non ullamcorper enim. Cras mollis eget nibh nec porta. Phasellus eget ligula sed lacus rutrum commodo. Sed dignissim leo sed pulvinar porttitor.",
         "response": "Over the next few days you collect as much in the way of supplies as you can carry. You do face some challenges, however..."
@@ -225,8 +225,8 @@
       {
         "option": "Cross on foot",
         "detail": "Crossing on foot is cheaper, but more dangerous.",
-        "data": {"money":-30},
-        "requirements": {"money": 30},
+        "data": {"money": 0},
+        "requirements": {"money": 0},
         "response": "You pay your contact the $3000. The driver arrives that night with a cargo van. There is a lumpy mattress and some dirty blankets in the back. You and your family hide yourselves among sacks of rice and bags of clothes."
       }
     ],
@@ -325,6 +325,7 @@
         "option": "Option 2",
         "detail": "",
         "data": {"challenges": 0},
+        "requirements": {"money": 10000},
         "response": "Fusce tempus ante quis felis tempor, quis tristique justo tempor. Aliquam aliquam fringilla ultrices."
       }
     ],
@@ -604,6 +605,7 @@
         "option": "Option 2",
         "detail": "",
         "data": {"challenges": 0},
+        "requirements": {"money": 10000},
         "response": "Fusce tempus ante quis felis tempor, quis tristique justo tempor. Aliquam aliquam fringilla ultrices."
       }
     ],

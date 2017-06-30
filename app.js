@@ -15,7 +15,7 @@
 
   		gameState = {},
 
-  		DEBUG = true;
+  		DEBUG = false;
 
 
   setupGame(chapterVal);
@@ -43,10 +43,20 @@
     if (typeof data === "string") { s.innerHTML = data; }
     else if (typeof data === "object") { s.innerHTML = data.option; }
 
-    if (enabled) { s.classList.add("button"); }
-    else { s.classList.add("button", "buttonDisabledColor"); }
+    s.classList.add("button");
 
-    if (enabled) {
+    if (data.requirements && Object.keys(data.requirements).length != 0) {
+      for (var r in data.requirements) {
+        if ((r === "money" && data.requirements[r] > gameState.money) ||
+            (r === "cost" && data.requirements[r]*gameState.family > gameState.money) ||
+            (r === "family" && data.requirements[r] > gameState.family) ||
+            (r === "inventory" && data.requirements[r] > gameState.inventory)) {
+              s.classList.add("buttonDisabledColor");
+        }
+      }
+    }
+
+    if (!hasClass(s, "buttonDisabledColor")) {
       s.addEventListener("click", function() {
         if (typeof data === "object") {
           gameState.chosenOption = data;
@@ -74,20 +84,7 @@
     for (let i=0; i < answerObj.length; i++) {
       var d = document.createElement("div");
       d.classList.add(colSize);
-
-      if (answerObj[i].requirements && Object.keys(answerObj[i].requirements).length != 0) {
-        for (var r in answerObj[i].requirements) {
-          if ((r === "money" && answerObj[i].requirements[r] > gameState.money) ||
-              (r === "cost" && answerObj[i].requirements[r]*gameState.family > gameState.money) ||
-              (r === "family" && answerObj[i].requirements[r] > gameState.family) ||
-              (r === "inventory" && answerObj[i].requirements[r] > gameState.inventory)) {
-                enableButton = false;
-          }
-        }
-      }
-
       createButton(answerObj[i], d, enableButton);
-
       div.appendChild(d);
     }
   }
@@ -348,39 +345,35 @@
   }
 
   function introChapter() {
-    var h1 = document.createElement("h1");
-    var chapter = gameState.chapter;
-    var logo;
-    switch(chapter) {
-      case 1:
-        h1.innerHTML = "CHAPTER 1";
-        logo = document.getElementById("ica-logo-o");
-        break;
-      case 2:
-        h1.innerHTML = "CHAPTER 2";
-        logo = document.getElementById("ica-logo-op");
-        break;
-      case 3:
-        h1.innerHTML = "CHAPTER 3";
-        logo = document.getElementById("ica-logo-opg");
-        break;
+    if (DEBUG) { advanceState(); }
+    else {
+      var chapter = gameState.chapter;
+      var logo;
+      switch(chapter) {
+        case 1:
+          logo = document.getElementById("ica-logo-o");
+          break;
+        case 2:
+          logo = document.getElementById("ica-logo-op");
+          break;
+        case 3:
+          logo = document.getElementById("ica-logo-opg");
+          break;
+      }
+      logo.classList.remove("hidden");
+      logo.classList.add('logoFadeIn');
+
+      setTimeout(function() {
+        logo.classList.add('logoFadeOut');
+      }, 4000)
+
+      setTimeout(function() {
+        // clearDiv([logoContainer]);
+        resetAnim(gameContainer, 'fadeIn');
+        logo.classList.add("hidden");
+        advanceState();
+      }, 5000);
     }
-    logo.classList.remove("hidden");
-    logoContainer.appendChild(h1);
-    //resetAnim(logo, 'logoFadeIn');
-    logo.classList.add('logoFadeIn');
-
-    setTimeout(function() {
-      logo.classList.add('logoFadeOut');
-    }, 4000)
-
-    setTimeout(function() {
-      // clearDiv([logoContainer]);
-      logoContainer.removeChild(h1);
-      resetAnim(gameContainer, 'fadeIn');
-      logo.classList.add("hidden");
-      advanceState();
-    }, 5000);
   }
 
   function setupGame(cv) {
